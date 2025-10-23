@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Data Processing CI/CD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .file-card {
+            margin-top: 1.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: .5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .file-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background-color: #f1f3f5;
+            border-bottom: 1px solid #dee2e6;
+            border-top-left-radius: .5rem;
+            border-top-right-radius: .5rem;
+        }
+        .file-header .filename {
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #343a40;
+        }
+        .copy-btn {
+            font-size: 0.8rem;
+        }
+        pre {
+            margin-bottom: 0;
+            background-color: #212529;
+        }
+        code.hljs {
+            padding: 1.25rem;
+            border-bottom-left-radius: .5rem;
+            border-bottom-right-radius: .5rem;
+            font-size: 0.875rem;
+        }
+        .nav-tabs .nav-link {
+            color: #495057;
+        }
+        .nav-tabs .nav-link.active {
+            color: #000;
+            font-weight: 500;
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+        }
+        .tab-content {
+            border: 1px solid #dee2e6;
+            border-top: none;
+            padding: 1rem;
+            background-color: #fff;
+            border-bottom-left-radius: .5rem;
+            border-bottom-right-radius: .5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5">Python Data Processing with CI/CD</h1>
+        <p class="lead text-muted">A production-ready project demonstrating a Python script, its data, and a GitHub Actions workflow for automated execution and deployment to GitHub Pages.</p>
+    </div>
+
+    <!-- File Tabs -->
+    <ul class="nav nav-tabs" id="fileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="script-tab" data-bs-toggle="tab" data-bs-target="#script-tab-pane" type="button" role="tab" aria-controls="script-tab-pane" aria-selected="true">
+                <i class="bi bi-filetype-py"></i> execute.py
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="data-tab" data-bs-toggle="tab" data-bs-target="#data-tab-pane" type="button" role="tab" aria-controls="data-tab-pane" aria-selected="false">
+                <i class="bi bi-filetype-csv"></i> data.csv
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ci-tab" data-bs-toggle="tab" data-bs-target="#ci-tab-pane" type="button" role="tab" aria-controls="ci-tab-pane" aria-selected="false">
+                <i class="bi bi-github"></i> .github/workflows/ci.yml
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="fileTabsContent">
+        <!-- Python Script Pane -->
+        <div class="tab-pane fade show active" id="script-tab-pane" role="tabpanel" aria-labelledby="script-tab" tabindex="0">
+            <p>This Python script uses the Pandas library to read sales data, calculate total revenue per product, and print the result as a JSON object to standard output. The original script contained a typo ("revenew") which has been corrected.</p>
+            <div class="file-card">
+                <div class="file-header">
+                    <span class="filename">execute.py</span>
+                    <button class="btn btn-sm btn-outline-secondary copy-btn"><i class="bi bi-clipboard"></i> Copy</button>
+                </div>
+                <pre><code class="language-python" id="code-execute-py">import json
+import pandas as pd
+
+def main():
+    # Read the data from the CSV file
+    df = pd.read_csv("data.csv")
+
+    # Calculate the total revenue for each product
+    df["total_revenue"] = df["quantity_sold"] * df["price_per_unit"]
+
+    # Group by product and sum the total revenue
+    product_revenue = df.groupby("product")["total_revenue"].sum()
+
+    # Convert the result to a dictionary and then to a JSON string
+    result_dict = product_revenue.to_dict()
+    result_json = json.dumps(result_dict, indent=4)
+
+    # Print the JSON string to standard output
+    print(result_json)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+            </div>
+        </div>
+
+        <!-- Data CSV Pane -->
+        <div class="tab-pane fade" id="data-tab-pane" role="tabpanel" aria-labelledby="data-tab" tabindex="0">
+            <p>The input data, converted from <code>data.xlsx</code> to CSV format. This file is read by the Python script.</p>
+            <div class="file-card">
+                <div class="file-header">
+                    <span class="filename">data.csv</span>
+                    <button class="btn btn-sm btn-outline-secondary copy-btn"><i class="bi bi-clipboard"></i> Copy</button>
+                </div>
+                <pre><code class="language-csv" id="code-data-csv">sale_id,product,quantity_sold,price_per_unit
+1,Apple,10,0.5
+2,Banana,20,0.3
+3,Apple,15,0.5
+4,Orange,12,0.6
+5,Banana,25,0.3
+6,Apple,5,0.5
+7,Orange,8,0.6
+</code></pre>
+            </div>
+        </div>
+
+        <!-- CI Workflow Pane -->
+        <div class="tab-pane fade" id="ci-tab-pane" role="tabpanel" aria-labelledby="ci-tab" tabindex="0">
+            <p>This GitHub Actions workflow automates the project's quality checks and deployment. On every push to <code>main</code>, it performs the following steps:</p>
+            <ol>
+                <li>Sets up a Python 3.11 environment.</li>
+                <li>Installs dependencies (Pandas and Ruff).</li>
+                <li>Lints the code with Ruff to ensure code quality.</li>
+                <li>Executes <code>execute.py</code> and redirects its output to create <code>result.json</code>.</li>
+                <li>Deploys the generated <code>result.json</code> to GitHub Pages.</li>
+            </ol>
+            <div class="file-card">
+                <div class="file-header">
+                    <span class="filename">.github/workflows/ci.yml</span>
+                    <button class="btn btn-sm btn-outline-secondary copy-btn"><i class="bi bi-clipboard"></i> Copy</button>
+                </div>
+                <pre><code class="language-yaml" id="code-ci-yml">name: Python CI and Deploy to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}/result.json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas==2.2.2 ruff==0.4.4
+
+      - name: Lint with ruff
+        run: ruff check .
+
+      - name: Create directory for Pages artifact
+        run: mkdir -p public
+
+      - name: Execute script and generate output
+        run: python execute.py > public/result.json
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- CI/CD Outcome -->
+    <div class="mt-5">
+        <h4>CI/CD Pipeline Outcome</h4>
+        <p class="text-muted">The GitHub Actions workflow generates <code>result.json</code>, which is then published to GitHub Pages. This file is a build artifact and is not committed to the repository. The expected content is shown below.</p>
+        <div class="file-card">
+            <div class="file-header">
+                <span class="filename">result.json (Generated via CI)</span>
+                <button class="btn btn-sm btn-outline-secondary copy-btn"><i class="bi bi-clipboard"></i> Copy</button>
+            </div>
+            <pre><code class="language-json" id="code-result-json">{
+    "Apple": 15.0,
+    "Banana": 13.5,
+    "Orange": 12.0
+}
+</code></pre>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csv.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initialize highlight.js
+        hljs.highlightAll();
+
+        // Add copy functionality to all copy buttons
+        const copyButtons = document.querySelectorAll('.copy-btn');
+        copyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const codeBlock = button.closest('.file-card').querySelector('code');
+                const codeText = codeBlock.innerText;
+
+                navigator.clipboard.writeText(codeText).then(() => {
+                    const originalIcon = button.innerHTML;
+                    button.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                    button.classList.remove('btn-outline-secondary');
+                    button.classList.add('btn-success');
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalIcon;
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-outline-secondary');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy text.');
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
