@@ -1,3 +1,3 @@
-# Analyze
-
-Generated application for Analyze
+sh
+    git clone https://github.com/Adithya-Hariharan/Analyze.git
+    cd Analyze
